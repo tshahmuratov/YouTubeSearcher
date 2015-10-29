@@ -1,0 +1,8 @@
+{
+  "name": "youtube-searcher",
+  "version": "0.0.1",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-inject": "^3.0.0"
+  }
+}

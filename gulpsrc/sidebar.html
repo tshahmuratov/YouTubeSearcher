@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- inject:css -->
+<!-- endinject -->
+<base href="/">
+<body data-ng-app="app">
+	<section class="grid" style="z-index: 4;">
+		<!-- search hero -->
+		<section class="hero row">
+			<section class="col-100 center padding-top">
+				<input class="search-field"
+						type="text" name="q" results="0" autocomplete="off" placeholder="Введите текст для поиска"
+						ng-model="queryInputValue"
+						ng-keydown="onSearchbarKeydown($event)"
+						ng-focus="onSearchbarFocus($event)"
+						ng-click="onSearchbarFocus($event)"
+						ng-blur="onSearchbarBlur($event)"/>
+				<button>Поиск</button>
+				<ul class="suggested-search-queries" ng-class="{ 'visible': settings.suggestedSearchIsVisible }">
+					<li class="suggested-search-query"
+						ng-repeat="query in suggestedSearchQueries"
+						ng-class="{ 'selected': ($index + 1) === selectedSuggestedSearchQueryIndex }">
+						<p class="no-margin-bottom"
+							ng-bind-html="query"
+							ng-click="onSuggestedSearchQueryClick($index + 1)">
+						</p>
+					</li>
+				</ul>
+			</section>
+		</section>
+	</section><!--/.grid-->
+	
+	<!-- search results area -->
+	<section class="bg-light" ng-show="query">
+		<section class="grid">
+			<section class="col-100 center padding-top-small padding-bottom-small" ng-show="!searchSuccess" >
+				<ul class="search-messages text-center">
+					<li class="search-message" ng-show="query">
+						<p class="no-margin-bottom padding-top-small padding-bottom-small smaller">Ничего не найдено.</p>
+					</li>
+					<li class="search-message" ng-hide="query">
+						<p class="no-margin-bottom padding-top-small padding-bottom-small smaller">Введена пустая строка.</p>
+					</li>
+				</ul>
+			</section>
+			<ul class="search-results links small col-80 padding-top-small" ng-show="!loading && results.length">
+				<li class="search-result"
+					ng-repeat="result in filteredResults"
+					ng-bind-html="result">
+				</li>
+			</ul>
+		</section><!--/.grid-->
+	</section>
+<!-- inject:js -->
+<!-- endinject -->
+</body>
+</html>
