@@ -2,18 +2,21 @@ var Buttons = require('sdk/ui/button/action');
 var Sidebars = require("sdk/ui/sidebar");
 var UIControllerModule = require("./controller.ui.js");
 
-var UIViewInit = function(uiController) {
-	if (!(uiController instanceof uiController.constructor))
-		throw "uiController of wrong type " + uiController.constructor;
-	var that = this;
-	var controller = uiController;
+var UIView = function() {
+	this.sidebar;
+	this.mainButton;
 	
-	var mainButtonClick = function() {
-		controller.handleTabButtonClick();
-		that.sidebarShow();
+	this.createSidebar = function(sidebarOnReady) {
+		this.sidebar = Sidebars.Sidebar({
+			id: 'youtube-searcher-sidebar',
+			title: 'YouTube Searcher',
+			url: "./sidebar.html",
+			onReady: sidebarOnReady
+		});
 	}
 	
-	var mainButton = Buttons.ActionButton({
+	this.createButton = function(buttonOnClick) {
+		this.mainButton = Buttons.ActionButton({
 			id: "youtube-searcher",
 			label: "Open YouTube Searcher",
 			icon: {
@@ -22,18 +25,13 @@ var UIViewInit = function(uiController) {
 				"32": "./img/yts-32.png",
 				"64": "./img/yts-64.png"
 			},
-			onClick: mainButtonClick.bind(this)
+			onClick: buttonOnClick
 		});
-
-	var sidebar = Sidebars.Sidebar({
-			id: 'youtube-searcher-sidebar',
-			title: 'YouTube Searcher',
-			url: "./sidebar.html"
-		});
+	}
 	
 	this.sidebarShow = function() {
-		sidebar.show();
+		this.sidebar.show();
 	}
 }
 
-module.exports = UIViewInit;
+module.exports = UIView;
