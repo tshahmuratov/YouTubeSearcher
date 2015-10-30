@@ -13,7 +13,7 @@ var YouTubeView = function () {
 		//create css class
 		var style = document.createElement('style');
 		style.type = 'text/css';
-		style.innerHTML = '.youtubeSearcherSelected { border-color: red; }';
+		style.innerHTML = '.youtubeSearcherSelected { border: 1px solid red; }';
 		document.getElementsByTagName('head')[0].appendChild(style);
 	}
 }

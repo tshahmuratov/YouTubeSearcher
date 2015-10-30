@@ -31,6 +31,7 @@ var TabController = function(url) {
 	}
 	
 	this.sendSidebarSelection = function(message) {
+		console.log("sendSidebarSelection");
 		this.tabWorker.port.emit("sidebarSelectionChanged", message);
 	}
 	
