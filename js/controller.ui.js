@@ -2,10 +2,11 @@ var Buttons = require('sdk/ui/button/action');
 var Sidebars = require("sdk/ui/sidebar");
 var UIControllerModule = require("./controller.ui.js");
 
-var UIController = function(uiView) {
+var UIController = function(uiView, htmlUrl) {
 	this.uiView = uiView;
 	this.mediator;
 	this.sidebarWorker;
+	this.htmlUrl = htmlUrl;
 	
 	this.sidebarWorkerFunc = function(worker) {
 		worker.port.on("selectedListChange", this.mediator.sidebarSelectionChangedNotify.bind(this.mediator));
@@ -20,7 +21,7 @@ var UIController = function(uiView) {
 	this.initView = function() {
 		if (typeof (this.mediator) == 'undefined') 
 			throw new Error("Mediator undefined in UIController.")
-		this.uiView.createSidebar(this.sidebarWorkerFunc.bind(this));
+		this.uiView.createSidebar(this.sidebarWorkerFunc.bind(this), this.htmlUrl);
 		this.uiView.createButton(this.mainButtonClick.bind(this));
 	}
 	

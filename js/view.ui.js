@@ -2,17 +2,15 @@ var Buttons = require('sdk/ui/button/action');
 var Sidebars = require("sdk/ui/sidebar");
 var UIControllerModule = require("./controller.ui.js");
 
-var UIView = function(scriptList) {
+var UIView = function() {
 	this.sidebar;
 	this.mainButton;
-	this.scriptList = scriptList;
 	
-	this.createSidebar = function(sidebarOnReady) {
+	this.createSidebar = function(sidebarOnReady, htmlUrl) {
 		this.sidebar = Sidebars.Sidebar({
 			id: 'youtube-searcher-sidebar',
 			title: 'YouTube Searcher',
-			url: "./sidebar.html",
-			contentScriptFile: this.scriptList,
+			url: htmlUrl,
 			onReady: sidebarOnReady
 		});
 	}

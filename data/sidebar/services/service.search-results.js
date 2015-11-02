@@ -28,7 +28,7 @@
 		}
 		
         function getSearchResults(queryString) {
-            var queries = queryString.toLowerCase().split(' ');
+            var queries = queryString.trim().toLowerCase().split(' ');
 			var results = [];
 			updateRates(queries);
 			filteredArray.sort(sortComparator);

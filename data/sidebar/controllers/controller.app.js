@@ -1,7 +1,7 @@
 "use strict";
 
 !function(window, angular, undefined) {
-    function AppControllerFactory($scope, $window, searchResultsService, searchSuggestionsService) {
+    function AppControllerFactory($scope, $window, searchResultsService) {
 		function loadList() {
 			if (!$scope.query.length) return;
 			$scope.filteredResults = searchResultsService.search($scope.query);
@@ -47,5 +47,5 @@
 		$scope.query = "";
 		$scope.filteredResults = [];
 	}
-    angular.module("sidebar").controller("AppController", AppControllerFactory), AppControllerFactory.$inject = ["$scope", "$window", "searchResultsService", "searchSuggestionsService"]
+    angular.module("sidebar").controller("AppController", AppControllerFactory), AppControllerFactory.$inject = ["$scope", "$window", "searchResultsService"]
 }(window, window.angular);

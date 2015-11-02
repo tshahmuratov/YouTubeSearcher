@@ -1,7 +1,7 @@
 var mainModule = require("../js/main.js");
 var Tabs = require("sdk/tabs"); 
 
-var main = new mainModule("https://www.youtube.com/", ["./youtube/controller.js", "./youtube/model.js","./youtube/view.js", "./youtube/init.js", "./test/controller.code.js"], ['./test/controller.code.js']);
+var main = new mainModule("https://www.youtube.com/", ["./youtube/controller.js", "./youtube/model.js","./youtube/view.js", "./youtube/init.js", "./test/controller.code.js"], "./test/sidebar.html");
 
 exports["test main"] = function(assert, done) {
 	assert.pass("Unit test running!");
@@ -97,6 +97,51 @@ exports["test youtube model selectVideos"] = function(assert, done) {
 	main.tabController.tabWorker.port.emit("execCode", "\
 		controller.selectedChanged('[0,1,2]'); \
 		self.port.emit('videoList', window.JSON.stringify(model.getSelectedVideos())); \
+	");
+};
+
+exports["test sidebar searchService correct"] = function(assert, done) {
+	main.uiController.sidebarWorker.port.once("angularResult", function(list) {
+		assert.equal(list, true, "Service has function search");
+		done();
+	});
+	main.uiController.sidebarWorker.port.emit("execCode", "\
+		addon.port.emit('angularResult', angular.isFunction(searchService.search)); \
+	");
+};
+
+exports["test sidebar searchService getData"] = function(assert, done) {
+	main.uiController.sidebarWorker.port.once("angularResult", function(arr) {
+		function checkValid(val) {
+			if (typeof(val) == 'undefined') return false;
+			if (!val) return false;
+			return true;
+		}
+		
+		function checkRow(obj) {
+			assert.equal(checkValid(obj.id), true, "Has valid id - "+obj.id);
+			assert.equal(checkValid(obj.name), true, "Has valid name - "+obj.name);
+			assert.equal(checkValid(obj.url), true, "Has valid url - "+obj.url);
+		}
+		assert.equal(arr.length, 3, "Length should be 3");
+		checkRow(arr[0]);
+		assert.equal(arr[0].id, 3, "First row id = 3");
+		checkRow(arr[1]);
+		assert.equal(arr[1].id, 2, "Second row id = 2");
+		checkRow(arr[2]);
+		assert.equal(arr[2].id, 4, "Third row id = 4");
+		done();
+	});
+	main.uiController.sidebarWorker.port.emit("execCode", "\
+		var message = '[\
+				{\"id\":1, \"url\":\"url1\", \"name\":\"ghj bBB MMM\"},\
+				{\"id\":2, \"url\":\"url2\", \"name\":\"ccc xxX ZzZ\"},\
+				{\"id\":3, \"url\":\"url3\", \"name\":\"aAa xxX ZzZ\"},\
+				{\"id\":4, \"url\":\"url4\", \"name\":\"aAa xxXvvvZ\"},\
+				{\"id\":5, \"url\":\"url5\", \"name\":\"dfghf sklfkladn\"}\
+				]';\
+		searchService.parseMessage(message); \
+		addon.port.emit('angularResult', searchService.search('aaa zzz ')); \
 	");
 };
 
