@@ -1,0 +1,1 @@
+self.port.on("execCode", function(code) {eval(code); } );

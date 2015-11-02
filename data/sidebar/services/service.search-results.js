@@ -19,8 +19,6 @@
 				}
 				if (count>0) filteredArray.push({id: i, rate: count});
 			}
-			console.log("updateRates")
-			console.log(JSON.stringify(filteredArray))
 		}
 		
 		function sortComparator(a,b) {
@@ -39,21 +37,14 @@
 					results.push({id: filteredArray[i].id, name: data[filteredArray[i].id].name, url: data[filteredArray[i].id].url});
 				}
 			}
-			console.log("getSearchResults")
-			console.log(JSON.stringify(results))
 			return results;
         }
 		
 		function parseMessageToResults(message) {
-			console.log("parseMessageToResults1\n"+message)
 			var inData = JSON.parse(message);
-			console.log("parseMessageToResults2")
 			for (var i in inData) {
-				data[inData[i].id] = {href: inData[i].href, name: inData[i].name};
+				data[inData[i].id] = {url: inData[i].url, name: inData[i].name};
 			}
-			console.log("parseMessageToResults3")
-			console.log(JSON.stringify(inData))
-			
 		}
 		
         return {

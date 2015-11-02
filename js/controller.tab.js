@@ -1,10 +1,11 @@
 var Tabs = require("sdk/tabs"); 
 
-var TabController = function(url) {
+var TabController = function(url, scriptList) {
 	this.url = url;
 	this.mediator;
 	this.tabWorker;
 	this.youtubeOpened = false;
+	this.scriptList = scriptList;
 	
 	this.prepareActiveTab = function() {
 		if (typeof (this.mediator) == 'undefined') 
@@ -16,7 +17,7 @@ var TabController = function(url) {
 	
 	this.attachScripts = function(tab) {
 		this.tabWorker = tab.attach({
-			contentScriptFile: ["./youtube/controller.js", "./youtube/model.js","./youtube/view.js", "./youtube/init.js"],
+			contentScriptFile: this.scriptList,
 			contentScriptWhen: "end"
 		});
 		this.tabWorker.port.on("youtubeListChanged", this.onYouTubeListMessage.bind(this));
@@ -31,7 +32,6 @@ var TabController = function(url) {
 	}
 	
 	this.sendSidebarSelection = function(message) {
-		console.log("sendSidebarSelection");
 		this.tabWorker.port.emit("sidebarSelectionChanged", message);
 	}
 	

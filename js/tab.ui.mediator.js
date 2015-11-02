@@ -17,7 +17,6 @@ var TabSidebarMediator = function(uiController, tabController) {
 	}
 	
 	this.sidebarSelectionChangedNotify = function(message) {
-		console.log("sidebarSelectionChangedNotify");
 		this.tabController.sendSidebarSelection(message);
 	}
 }

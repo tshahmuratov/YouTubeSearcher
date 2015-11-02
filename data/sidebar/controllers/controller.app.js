@@ -5,12 +5,10 @@
 		function loadList() {
 			if (!$scope.query.length) return;
 			$scope.filteredResults = searchResultsService.search($scope.query);
-			$scope.$apply();
 			var selectedIds = [];
 			for (var i in $scope.filteredResults) {
 				selectedIds.push($scope.filteredResults[i].id);
 			}
-			console.log("sendListMessage");
 			var eventDetail = {detail: JSON.stringify(selectedIds)};
 			var event = new CustomEvent('sidebarSelectedEvent', eventDetail);
 			window.dispatchEvent(event);
@@ -21,16 +19,24 @@
 			if ($scope.showResults) {
 				loadList();
 			}
+			$scope.$apply();
 		}
 		
 		$scope.startSearch = function() {
-			console.log("startSearch");
 			$scope.showResults = true;
-			console.log("showResults");
 			$scope.query = $scope.queryInputValue;
-			console.log("loadList");
 			loadList();
-			console.log("ok");
+			var searchExamples = localStorage.getItem('searchYouTube')
+			if (!searchExamples) searchExamples = '[]';
+			searchExamples = JSON.parse(searchExamples);
+			if (searchExamples.indexOf($scope.queryInputValue) == -1) {
+				if (searchExamples.length > 100) {
+					searchExamples.shift();
+				}
+				searchExamples.push($scope.queryInputValue);
+				localStorage.setItem('searchYouTube',JSON.stringify(searchExamples));
+				$('#searchYouTube').autocomplete("option", {source: searchExamples, minLength:1, delay:0});
+			}
 		}
 	
 		window.addEventListener('youtubeListEvent', youtubeListReceived, false);

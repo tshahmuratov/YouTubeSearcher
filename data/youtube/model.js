@@ -13,15 +13,14 @@ var YouTubeModel = function (view) {
 	}
 	
 	this.addVideo = function(url, name, parentElement) {
-		var id = this.autoIncrementId++;
 		if (typeof(this.urlFilter[url]) != 'undefined') return null;
+		var id = this.autoIncrementId++;
 		this.urlFilter[url] = 1;
 		this.videosArray[id] = {url: url, name: name, parentElement: parentElement};
 		return this.getVideoForExport(id);
 	}
 	
 	this.selectVideo = function(id) {
-		console.log("selectVideo "+id);
 		this.selectedVideos[id] = 1;
 		this.view.checkElement(this.videosArray[id].parentElement);
 	}
@@ -38,8 +37,8 @@ var YouTubeModel = function (view) {
 	}
 	
 	this.getSelectedVideos = function() {
-		var result = []
-		for (var id in this.videosArray) {
+		var result = [];
+		for (var id in this.selectedVideos) {
 			var desc = this.videosArray[id];
 			result.push(this.getVideoForExport(id));
 		}

@@ -3,10 +3,8 @@ var YouTubeController = function(model) {
 	this.self = self;
 	
 	this.selectedChanged = function(list) {
-		console.log("selectedChanged");
 		this.model.unselectAllVideos();
 		list = window.JSON.parse(list);
-		console.log(list);
 		for (var id in list) {
 			this.model.selectVideo(list[id]);
 		}
@@ -26,8 +24,6 @@ var YouTubeController = function(model) {
 				if (obj) res.push(obj);
 			}
 		}
-		console.log("parseNodes");
-		console.log(window.JSON.stringify(res));
 		return res;
 	}
 	
@@ -40,12 +36,9 @@ var YouTubeController = function(model) {
 			if (nodes[i].nodeType === 1) {
 				nodeList = nodes[i].getElementsByClassName('spf-link');
 				tmpRes = this.parseNodes(nodeList);
-				console.log(window.JSON.stringify(tmpRes));
 				res = res.concat(tmpRes);
 			}
 		}
-		console.log("onSpecMutation");
-		console.log(window.JSON.stringify(res));
 		this.sendNewList(res);
 	}
 	
@@ -54,8 +47,7 @@ var YouTubeController = function(model) {
 	}
 	
 	this.sendNewList = function(list) {
-		console.log("sendNewList\n"+window.JSON.stringify(list));
-		var list = window.JSON.stringify(list);
+		list = window.JSON.stringify(list);
 		this.self.port.emit("youtubeListChanged", list); 
 	}
 	
@@ -66,7 +58,6 @@ var YouTubeController = function(model) {
 	
 	this.init = function() {
 		var target = document.getElementsByClassName('section-list')[0];
-		console.log(target);
 		// create an observer instance
 		var observer = new MutationObserver(this.onMutations.bind(this));
 		
